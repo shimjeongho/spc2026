@@ -1,56 +1,19 @@
 <html>
     <head>
         <title>포토 캘린더</title>
-        <style>
-            h1, h2 {
-                text-align: center;
-            }
-
-            #calendar {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            #calendar th { /* #calender th : calendar 밑에 있는 모든 th*/
-                           /* #calender > th : calendar 바로 밑에 있는 th*/
-                width: 14%;
-                padding: 10px;
-                background-color: : #dadada;
-            }
-
-            #calendar td {
-                text-align: center;
-                padding: 10px;
-                border: 1px solid black;
-            }
-
-            /* #calendar th:first-child,  #calendar td:first-child {*/
-            /* calendar id를 가지고 그 아래 어디에 있던지 th를 찾아서 first-child를 골라*/
-            #calendar tr > *:first-child {
-                color: red;
-            }
-
-            #calendar th:last-child,
-            #calendar td:last-child {
-                color: blue;
-            }
-
-            img {
-                width: 100%;
-            }
-        </style>
+        <link rel="stylesheet" href="calendar.css">
     </head>
     <body>
         <h1>포토 캘린더</h1>
         <h2>2026년 4월</h2>
-        <img src="images/scene1.jpeg" alt="야경 바닷가 풍경">
+        <img src="images/scene1.jpg" alt="야경 바닷가 풍경">
         <table id="calendar">
             <tr>
                 <th>Sun</th>
                 <th>Mon</th>
                 <th>Tue</th>
                 <th>Wed</th>
-                <th>Tdu</th>
+                <th>Thu</th>
                 <th>Fri</th>
                 <th>Sat</th>
             </tr>
@@ -62,7 +25,7 @@
                 <td>2</td>
                 <td>3</td>
                 <td>4</td>
-            </tr>    
+            </tr>
             <tr>
                 <td>5</td>
                 <td>6</td>
@@ -71,16 +34,16 @@
                 <td>9</td>
                 <td>10</td>
                 <td>11</td>
-            </tr>     
+            </tr>
             <tr>
-                <td> 12</td>
+                <td>12</td>
                 <td>13</td>
                 <td>14</td>
                 <td>15</td>
                 <td>16</td>
                 <td>17</td>
                 <td>18</td>
-            </tr>    
+            </tr>
             <tr>
                 <td>19</td>
                 <td>20</td>
@@ -89,7 +52,7 @@
                 <td>23</td>
                 <td>24</td>
                 <td>25</td>
-            </tr>     
+            </tr>
             <tr>
                 <td>26</td>
                 <td>27</td>
@@ -98,7 +61,7 @@
                 <td>30</td>
                 <td></td>
                 <td></td>
-            </tr>    
+            </tr>
         </table>
     </body>
 </html>
