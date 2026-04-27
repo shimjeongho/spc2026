@@ -19,9 +19,9 @@
             myoutput.textContent = '나의 새로운 동적 문장'
         }
         function sayHello2() {
-            // getElements <!-- 복수형태로 기억함>
-                //복수형은 리스트가 변환됨(그걸 전문용어로 HTMLCollection이라는 자료구조에 담겨서)
-                // 리스트의 메
+            // getElements <-- 복수형임을 기억할것
+            // 복수형은 리스트가 반환됨 (그걸 전문용어로 HTMLCollection 이라는 자료구조에 담겨서)
+            // 리스트의 멤버는 인덱스로 가져옴 [0], [1], ...
             console.log("sayhello");
             const myoutput = document.getElementsByTagName('div'); 
             console.log(myoutput[0]); // 해당 DOM들의 (즉 해당 p들의) 첫번쩨 요소

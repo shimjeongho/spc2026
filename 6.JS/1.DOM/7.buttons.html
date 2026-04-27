@@ -7,14 +7,27 @@
 </head>
 <body>
     <h1>버튼 두개</h1>
-    <div>0</div>
+    <div id="result">0</div>
     <div>
-        <button>+1</button>
-        <button>-1</button>
+        <button onclick="increament()">+1</button>
+        <button onclick="decreament()">-1</button>
     </div>
 
     <script>
         // 각자의 버튼이 눌릴때마다 위에 div의 값을 가져다가 +1 또는 -1을 한다.
+        function increament() {
+            console.log('+1 클릭');
+            const result = document.getElementById('result');
+            console.log(result);
+            let value = parseInt(result.textContent); // 문자를 읽어서 숫자로 바꾼다.
+            value = value +1;
+            console.log(value);
+            result.textContent = value;
+        }
+        function decreament() {
+            console.log('-1 클릭');
+            document.getElementById('result').textContent -= 1;
+        }
     </script>
 </body>
 </html>
