@@ -6,18 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="mybutton">클릭하시오</button>
+    <button id="myButton">클릭하시오</button>
     <script>
-        
-         document.getElementById('myButton').addEventListener('click', () => {
+        document.getElementById('myButton').addEventListener('click', () => {
             console.log('클릭 OK');
         });
-
-        // 1. DOM요소 가져온다. 2. 이벤트 붙인다. 3. 핸들러 구현한다.
         document.getElementById('myButton').addEventListener('dblclick', () => {
             console.log('더블클릭 OK');
         });
-        
     </script>
 </body>
 </html>
