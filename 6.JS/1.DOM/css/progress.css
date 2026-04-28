@@ -1,0 +1,15 @@
+ #progressBar {
+            width: 100%;
+            background-color: #dfffb2;
+        }
+        #progress {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to right, #ff0000, #ff0000);
+            transition: width 0.8s ease-out; /* 부드럽게 흘러가기 */
+        }
+        #progressText {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
