@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 이벤트 등록한다(키보드관련) -->
+    <!-- 2. 목록에서 필터링한다-->
+    <!-- 3. 그걸로 DOM을 렌더링 한다. -->
+    <h1>실시간 검색 필터</h1>
+    <input type="text" id="searchInput" placeholder="검색어...">
+    <ul id="itemList">
+        <li>apple</li>
+        <li>banana</li>
+        <li>orange</li>
+        <li>grape</li>
+        <li>strawberry</li>
+        <li>watermelon</li>
+        <li>pineapple</li>
+        <li>mango</li>
+        <li>peach</li>
+        <li>cherry</li>
+        <li>pear</li>
+        <li>kiwi</li>
+        <li>lemon</li>
+        <li>lime</li>
+        <li>blueberry</li>
+        <li>raspberry</li>
+        <li>coconut</li>
+        <li>avocado</li>
+        <li>pomegranate</li>
+        <li>plum</li>
+    </ul>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const itemList = document.getElementById('itemsList');
+        const items = itemList.getElementsByTagName('li');
+
+        searchInput.addEventListener('keyup', () => {
+            // 필터링 구현
+            const filter = searchInput.value.toLowerCase();
+
+            /*
+            // legacy한 for 반복 스타일
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const text = item.textContent;
+                if ( text.toLowerCase().includes(filter)) { // 소문자와 소문자로 비교해서 대소문자 구분없이 검색
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+            */
+           
+            Array.from(items).forEach((item) => {
+                const text = item.textContent;
+                if (text.toLowerCase().includes(filter)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        .slider {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto; /* 상하좌우 */
+            text-align: center;
+            max-width: 600px;
+            align-items: center;
+        }
+        .slider img {
+            max-width: 100%;
+            height: 300px;
+            display: none; /* 기본 다 숨김 */
+        }
+        .slider img.active {
+            display: block; /* 활성화된 이미지는 표시 */
+        }
+        .button {
+            margin:  20px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지 슬라이더</h1>
+    <div class="slider">
+        <img id="img1" src="images/고양이1.jpeg" class="active">
+        <img id="img2" src="images/고양이2.jpeg">
+        <img id="img3" src="images/고양이3.jpeg">
+
+        <div class="filename" id="filename">images/cat1.jpg</div>
+
+        <div class="button">
+            <button id="prevBtn">이전</button>
+            <button id="nextBtn">다음</button>
+        </div>
+    </div>
+    <script>
+        const imgs = document.querySelectorAll('.slider img');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const filename = document.getElementById('filename');
+
+        let index = 0;
+
+        function show(direction) {
+            imgs[index].classList.remove('active');
+            index += direction;
+
+            
+            imgs[index].classList.add('active');
+            
+            // 1. http://127.0.0.1:5500/images/고양이1.jpeg (현재 이미지 전체 URL 가져옴)
+            // 2.<.split('/')>  [
+                                // "http:",
+                                // "",
+                                // "127.0.0.1:5500",
+                                // "images",
+                                // "고양이1.jpeg"
+                                //                ] 
+                // '/' 기준으로 문자열 나눔
+            // 3.<slice(-2)> ["images", "고양이1.jpeg"] 뒤에서 2개만 가져옴
+            // 4.<join('/')> 다시 /로 이어 붙임 "images/고양이1.jpeg"
+                filename.textContent = imgs[index].src.split('/').slice(-2).join('/');
+
+                if (index + 1 >= imgs.length) {
+                    nextBtn.disabled = true; 
+                } else {
+                    nextBtn.disabled = false; 
+                }
+                if (index -1 < 0) {
+                    prevBtn.disabled = true; 
+                } else {
+                    prevBtn.disabled = false; 
+                }
+            }
+
+        nextBtn.addEventListener('click', () => {show(1)});
+        prevBtn.addEventListener('click', () => {show(-1)});
+    </script>
+</body>
+</html>
