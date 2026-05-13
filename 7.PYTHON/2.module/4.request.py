@@ -9,12 +9,12 @@ import requests
 # print(resp.headers)
 # print("웹 페이지 내용: ", resp.text)
 
-resp = requests.get('https://api.githubs.com')
+resp = requests.get('https://api.github.com')
 if (resp.status_code == 200):
     print(resp.text)
 else:
     print("해당 페이지를 가져오는데 실패했습니다. code: ", resp.status_code)
-
+    
 """
 # <Response [200]>
 # 200
