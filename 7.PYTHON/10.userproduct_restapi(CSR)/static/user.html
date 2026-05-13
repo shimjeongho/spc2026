@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 정보</title>
+</head>
+<body>
+    <h1>User 검색</h1>
+    <form id="search">
+        <label>사용자ID: <input type="number" id="id"></label>
+        <button type="submit">검색</button>
+
+        <ul id="user-list"></ul>
+    </form>
+
+    <script>
+        document.getElementById('search').addEventListener('submit', (ev) => {
+            ev.preventDefault();
+
+            const id = document.getElementById('id').value;
+            fetch(`/api/users/${id}`)
+            .then((resp) => resp.json())
+            .then((data) => console.log(data));
+        });
+    </script>
+</body>
+</html>
