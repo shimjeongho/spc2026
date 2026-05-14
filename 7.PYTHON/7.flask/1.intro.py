@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    5/0
+    # 5/0 # 에러 발생
     return """
     <html>
         <head>
@@ -20,7 +20,7 @@ def home():
             <H1>웰컴투 마이 홈</h1>
             <p>여기는 텍스트 본문이 들어갑니다.</p>
             <p>여기는 텍스트 본문22가 들어갑니다.</p>
-        <body>
+        </body>
     </html>
     """
 

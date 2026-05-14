@@ -46,3 +46,28 @@ def get_user_by_age(age):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+"""
+[
+  {
+    "age": 25,
+    "name": "Alice",
+    "phone": "123-456-7890"
+  },
+  {
+    "age": 30,
+    "name": "Bob",
+    "phone": "123-555-7890"
+  },
+  {
+    "age": 27,
+    "name": "Charlie",
+    "phone": "123-777-7890"
+  },
+  {
+    "age": 25,
+    "name": "David",
+    "phone": "123-888-7890"
+  }
+]
+"""

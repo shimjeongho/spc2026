@@ -35,14 +35,17 @@ def login():
 def upload():
     file = request.files.get('photo')
     print(file)
-    # 우리의 실습상 사용자가 올린 파일명을 그대로 사용하여
-    # 실서비스라면 여러 사용자들의 업로드 한 파일명이 필요
+    # 우리의 실습상 사용자가 올린 파일명을 그대로 사용하지만,
+    #  실서비스라면 여러 사용자들의 업로드 한 파일명이 겹쳐서 overwrite 될수 있음으로, 파읾여을 적절하게 바꾼다. (예, tiemstamp, hash, userid, 등등을 prefix)
+
     if file and allowed_file(file.filename):
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filepath)  # 파일 저장
         return "파일 받음"
     else:
         return f"지원되지 않은 파일입니다. 파일명: {file.filename}", 400
+
+#  업로드 클릭 시 '파일 받음'이면 성공
 
 if __name__ == '__main__':
     app.run(debug=True)

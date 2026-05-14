@@ -24,14 +24,62 @@ def search_users():
     if name:
         result = [u for u in users if name.lower() == u['name'].lower()]
 
+    # http://127.0.0.1:5000/users?name=Alice
+    """
+    [
+        {
+            "age": 25,
+            "name": "Alice",
+            "phone": "123-456-7890"
+        }
+    ]
+    """
+
     if age:
         result = [u for u in result if  int(age) == u['age']] 
+
+    # http://127.0.0.1:5000/users?age=25
+    """
+    [
+        {
+            "age": 25,
+            "name": "Alice",
+            "phone": "123-456-7890"
+        },
+        {
+            "age": 25,
+            "name": "David",
+            "phone": "123-888-7890"
+        }
+    ]
+    """
 
     # 기능 추가 - 국번으로 조회하기 (앞글자 startswith로)
     if phone:
         # result = [u for u in result if  phone == u['phone']]
         result = [u for u in result if u['phone'].startswith(phone)]
 
+    # http://127.0.0.1:5000/users?phone=123-5
+    """
+    [
+        {
+            "age": 30,
+            "name": "Bob",
+            "phone": "123-555-7890"
+        }
+    ]
+    """
+
+    # 여러가지 조건 http://127.0.0.1:5000/users?age=25&phone=123-8
+    """
+    [
+        {
+            "age": 25,
+            "name": "David",
+            "phone": "123-888-7890"
+        }
+    ]
+    """
 
     return jsonify(result)
 
