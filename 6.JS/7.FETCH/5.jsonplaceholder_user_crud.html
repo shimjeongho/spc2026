@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style></style>
+</head>
+<body>
+    <h1>외부 요청 테스트</h1>
+    <input type="number" id="uid">
+    <button id="loadBtn">데이터 요청</button>
+    <button id="saveBtn">데이터 쓰기</button>
+    <button id="delBtn">데이터 삭제</button>
+    <button id="modBtn">데이터 수정</button>
+    <div id="result"><!-- 응답 데이터를 표시할곳--></div>
+    <script>
+        /* PUT 정보 요청 */
+        document.getElementById('modBtn').addEventListener('click', () => {
+            const userId = document.getElementById('uid').value;
+            const putData = {
+                id: userId,
+                title: 'hello',
+                body: 'world',
+                userId: userId,
+                id: userId
+            };
+            fetch(`https://jsonplaceholder.typicode.com/posts/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify(putData)
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                });
+        });
+
+        /* DELETE 정보 요청 */
+        document.getElementById('delBtn').addEventListener('click', () => {
+            const userId = document.getElementById('uid').value;
+            fetch(`https://jsonplaceholder.typicode.com/posts/${userId}`, {
+                method: 'DELETE',
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        console.log("삭제 성공");
+                    } else {
+                        console.log("삭제 실패");
+                    }
+                });
+        });
+
+        /* POST 정보 요청 */
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const postData = {
+                title: 'hello',
+                body: 'world',
+                userId: 1,
+            }
+            /* 이 주소는 원작자의 문서를 통해서 확인 */
+            fetch('https://jsonplaceholder.typicode.com/posts', {
+                // POST 방식으로 보낼거야 라는 뜻 (기본값이 GET이므로, POST로 바꿔줘야함)
+                method: 'POST',
+                headers: {
+                    // jsom으로 보낼거야 라는 뜻(기본값이 Json이 아님 그래서 headers에 명시적으로 써줘야함)
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                // body는 실제로 보낼 데이터. JSON.stringify로 자바스크립트 객체를 JSON문자열로 바꿔서 보냄
+                body: JSON.stringify(postData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                })
+        })
+        /* GET 정보 요청 */
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            // then을 이용한 fetch 요청
+            const userId = document.getElementById('uid').value;
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <ul>
+                        <li>사용자ID: ${data.id}</li>
+                        <ul>
+                            <li>이름: ${data.name}</li>
+                            <li>전화번호: ${data.phone}</li>
+                            <li>웹사이트: ${data.website}</li>
+                        </ul>
+                    </ul>
+                `;
+            })
+            .catch((error) => {
+                console.log("위에 fetch를 처리하고 가공하는 과정중 어딘가에서 오류가 났음: ", error)
+            })
+
+    });
+    </script>
+</body>
+</html>

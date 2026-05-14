@@ -47,17 +47,22 @@ def product():
 # API 라우팅
 #######################################
 
-@app.route('/api/user/<id>')
-def search_users(id):
+@app.route('/api/users')
+@app.route('/api/users/<id>')
+def search_users(id=0):
     # 사용자를 검색해서
-    users = None
+
     return jsonify({"result": users})
 
-@app.route('/api/product')
-def search_products():
-     # Product를 검색해서
-     products = None
-     return jsonify({"result": products})
+@app.route('/api/products')
+@app.route('/api/products/<id>')
+def search_products(id=None):
+    # Product를 검색해서
+    if id is not None:
+        products = products.get(id)
+    else:
+        products = list(products.values())
+    return jsonify({"result": products})
 
 if __name__ == '__main__':
     app.run(debug=True)

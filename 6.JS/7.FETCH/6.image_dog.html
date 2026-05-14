@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 1. 버튼을 클릭하면, 이미지를 화면에 출력한다. -->
+     <!-- 요청해야할 주소는 deo.ceo에 방문해서 random 강아지 사진을 받아오는 스펙을 찾아보기 -->
+      <h1>랜덤 사진 표시</h1>
+        <button id="loadBtn">이미지 로딩</button>
+        <div id="result"><!-- 응답 데이터를 표시할곳--></div>
+    <script>
+        // document.getElementById('loadBtn').addEventListener('click', () => {
+        //     fetch('https://dog.ceo/api/breeds/image/random')
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         const resultDiv = document.getElementById('result');
+        //         // data.message에 이미지 주소가 담겨있음
+        //         // 응답 스펙
+        //         // {
+        //         // "message": "https://images.dog.ceo/breeds/mountain-bernese/n02107683_6752.jpg",
+        //         // "status": "success"
+        //         // }
+        //         resultDiv.innerHTML = `<img src="${data.message}" alt="Random Dog Image">`;
+        //     })
+        //     .catch((error) => {
+        //         console.log("위에 fetch를 처리하고 가공하는 과정중 어딘가에서 오류가 났음: ", error)
+        //     })
+        // })
+
+        // 밑에 function으로도 가능하다
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            fetch('https://dog.ceo/api/breeds/image/random')
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status !== "success") {
+                    displayError(data);
+                } else {
+                    displayResult(data);
+                }
+            })
+            .catch(error => {
+                console.error("알수 없는 오류: ", error)
+                displayError(error);
+            });
+
+            // 이미지 못 불러왔을 경우
+            function displayError(error) {
+                const result = document.getElementById('result');
+                result.innerHTML = `
+                    <p style="color: red;">이미지를 불러오지 못했습니다.</p>
+                `;
+            }
+
+            function displayResult(data) {
+               console.log("화면에 DOM 그리기: ", data)
+               const result = document.getElementById('result');
+               result.innerHTML = `
+                    <img src="${data.message}" width="400px" >
+               `;
+            }
+        })
+
+    </script>
+</body>
+</html>
