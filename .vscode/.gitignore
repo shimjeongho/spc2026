@@ -2,5 +2,8 @@
 .vscode
 .DS_Store
 
+# Credentaisls
+.env
+
 # 업로드 파일
 uploads/
