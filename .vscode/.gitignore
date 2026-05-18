@@ -2,8 +2,11 @@
 .vscode
 .DS_Store
 
-# Credentaisls
+# Credentaisls (민간정보)
 .env
 
 # 업로드 파일
 uploads/
+
+#
+.session/

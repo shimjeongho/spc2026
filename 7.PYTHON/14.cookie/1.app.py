@@ -8,7 +8,7 @@ def set_cookie():
     resp = make_response("COOKIE has been set!!")
     # 실제로 가져감
     resp.set_cookie("my_edu", "spc2026")
-
+    
     return resp
 
 @app.route("/get-cookie")
