@@ -58,11 +58,24 @@ def login():
 # 1-2. users 안에서 나의 비번을 바꾼다.
 # 1-3. 성공적으로 변경되면 나의 profile에서 확인한다.
 # 1-4. '비밀번호 변경'을 눌렀을때 성공적으로 변경되었음을 알려준다.(사용자 피드백)
-@app.route('/profile')    
+@app.route('/profile', methods=['GET', 'POST'])    
 def profile():
     user = session.get('user')
     if not user:
         return redirect(url_for('home')) # 로그인 안됐으면 로그인 페이지로 강제 이동
+    
+    if request.method == 'POST':
+        new_pw = request.form.get('new_pw')
+        # users 리스트에서 현재 로그인한 사용자의 비밀번호를 변경한다.
+        for u in users:
+            if u['id'] == user['id']:
+                u['pw'] = new_pw
+                session['user'] = u # 세션정보를 구 -> 신 버전으로 갱신 (이래야 반영)
+    
+                message = "비밀번호가 성공적으로 변경되었습니다."
+                # return redirect(url_for('profile')) # 변경된 정보가 반영된 프로필 페이지로 리다이렉트
+                return render_template('profile.html', user=u, message=message) # 변경된 사용자 정보와 메시지를 프로필 페이지로 전달
+            
     return render_template('profile.html', user=user)
 
 @app.route('/logout')
