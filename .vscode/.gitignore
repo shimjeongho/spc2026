@@ -8,5 +8,13 @@
 # 업로드 파일
 uploads/
 
-#
+# 세션임시정보
 .session/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+bike_202512.csv
+bike.db 
