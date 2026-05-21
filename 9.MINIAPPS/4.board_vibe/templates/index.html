@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Vibe - 감성 게시판</title>
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Background Gradient Blobs for Glassmorphism depth -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h1>Board <span>Vibe</span></h1>
+            </div>
+            <p class="subtitle">오늘 당신의 생각과 감성을 카드로 남겨보세요.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Form Card Section -->
+            <section class="form-section">
+                <div class="glass-card form-card">
+                    <div class="card-header">
+                        <h2>새 글 작성하기</h2>
+                        <span class="card-subtitle">기록하고 싶은 순간을 작성해 보세요.</span>
+                    </div>
+                    
+                    <form id="post-form" novalidate>
+                        <!-- Title Input Group -->
+                        <div class="input-group">
+                            <input type="text" id="title" name="title" required placeholder=" ">
+                            <label for="title"><i class="fa-solid fa-heading"></i> 제목을 입력하세요</label>
+                            <span class="focus-border"></span>
+                            <div class="validation-message" id="title-error">제목은 필수 입력 사항입니다.</div>
+                        </div>
+
+                        <!-- Message Input Group -->
+                        <div class="input-group">
+                            <textarea id="message" name="message" required placeholder=" " rows="4"></textarea>
+                            <label for="message"><i class="fa-solid fa-align-left"></i> 내용을 입력하세요</label>
+                            <span class="focus-border"></span>
+                            <div class="validation-message" id="message-error">내용은 필수 입력 사항입니다.</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn" id="submit-btn">
+                            <span class="btn-text">카드 게시하기</span>
+                            <span class="btn-icon"><i class="fa-solid fa-paper-plane"></i></span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Cards Grid Section -->
+            <section class="posts-section">
+                <div class="section-title-area">
+                    <h3>최근 기록된 카드 뷰</h3>
+                    <span class="post-count" id="post-count">게시글 0개</span>
+                </div>
+                
+                <!-- Posts Container Grid -->
+                <div class="posts-grid" id="posts-container">
+                    <!-- Cards will be dynamically injected here by main.js -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">
+                        <i class="fa-regular fa-folder-open"></i>
+                    </div>
+                    <h4>아직 작성된 글이 없습니다</h4>
+                    <p>상단의 폼을 이용해 첫 번째 감성 카드를 게시해보세요!</p>
+                </div>
+                
+                <!-- Loading State -->
+                <div class="loading-state" id="loading-state">
+                    <div class="spinner"></div>
+                    <p>카드를 불러오는 중...</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Board Vibe. Crafted with <i class="fa-solid fa-heart"></i> for premium experience.</p>
+        </footer>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
