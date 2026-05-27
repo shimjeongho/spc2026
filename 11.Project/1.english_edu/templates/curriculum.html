@@ -3,5 +3,38 @@
 {% block content %}
 <h2>{{ grade }}학년 - {{ curriculum_title }} 커리큐럼</h2>
     
-<!-- 이후에 채팅창 박스로 넣고 대화하도록 만들어야함 -->
+<div id="chatbot">
+    <div id="chatlog"></div>
+    <form id="chatForm">
+        <input type="text" id="userInput" name="userInput" placeholder="대화를 입력하세요">
+        <button type="submit">전송</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('chatForm').addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const userInput = document.getElementById('userInput').value;
+        const chatlog = document.getElementById('chatlog');
+
+        chatlog.innerHTML += `<p>질문: ${userInput}</p>`;
+
+        // 백엔드에 요청
+        // fetch('/api/chat', {
+        const response = await fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ // FormData 전송을 편하게 하기 위한 함수
+                'user_input': userInput
+            })
+        });
+
+        const data = await response.json();
+        chatlog.innerHTML += `<p>응답: ${data.response}</p>`;
+        chatlog.scrollTop=chatlog.scrollHeight;
+        console.log(data)
+    })
+</script>
 {% endblock %}

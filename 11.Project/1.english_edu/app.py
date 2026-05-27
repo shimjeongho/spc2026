@@ -6,7 +6,19 @@
 # 4. 그럼 이제, 진짜 우리의 이 상황 (학년, 커리큐럼)에 대해서 영어로 대화를 하도록 만든다.
 # 5. [추가] 메모리를 통해서 대화 내용 컨텍스트를 기억하게 한다.
 
-from flask import Flask, render_template
+# 환경변수 불러옴
+import os
+from dotenv import load_dotenv
+# 웹 서비스 기본 프레임워크
+from flask import Flask, render_template, request, jsonify
+# OpneAI 라이브러리
+from openai import OpenAI
+
+load_dotenv()
+
+# # OpenAI 클라이언트 생성
+openai_api_key = os.environ.get('OPENAI_API_KEY')
+client = OpenAI(api_key=openai_api_key)
 
 app = Flask(__name__)
 
@@ -32,12 +44,108 @@ def grade(grade):
         return render_template('grade.html', grade=grade, grades=curriculums.keys(), curriculums=curriculums_index)
     return "해당 학년은 존재하지 않습니다.", 404
 
-@app.route('/grade/<int:grade>/curriculum/<int:curriculum_id>')
+@app.route('/grade/<int:grade>/curriculum/<int:curriculum_id>', methods=['GET', 'POST'])
 def curriculum(grade, curriculum_id):
-    if grade in curriculum and 0 <= curriculum_id < len(curriculums[grade]):
+    if grade in curriculums and 0 <= curriculum_id < len(curriculums[grade]):
         curriculum_title = curriculums[grade][curriculum_id]
+
+        # POST 처리하는 곳
+        if request.method == "POST":
+            user_input = request.form.get('user_input')
+            print(f"학년: {grade}, 커리큐럼: {curriculum_title}, 사용자입력: , {user_input}")
+
+            # 실무적으로는, 이런 프롬프트 스테이트먼트를 별도 파일로 분리하는것이 더 좋음
+            system_prompt = f"""
+                            당신은 {grade} 학년 영어 교사입니다.
+                            학생의 영어 수준과 {curriculum_title} 커리큘럼에 맞춰 대화합니다.
+
+                            규칙:
+                            - 반드시 실제 교사처럼 자연스럽게 답변합니다.
+                            - 설명문, 지침, 예시, 메타 발언을 절대 출력하지 않습니다.
+                            - "학생:", "Teacher:" 같은 역할 라벨을 사용하지 않습니다.
+                            - "학생이 대답하면", "예를 들어", "영어로 유도합니다" 같은 설명을 절대 출력하지 않습니다.
+                            - 오직 학생에게 직접 말하는 답변만 출력합니다.
+                            - 영어 질문에는 영어로 답변합니다.
+                            - 한국어 질문에는 한국어와 쉬운 영어를 함께 사용합니다.
+                            - 항상 학생이 영어로 한 문장 이상 답변하도록 자연스럽게 유도합니다.
+                            - 답변은 짧고 자연스럽게 유지합니다.
+                            """
+            user_prompt = f"""
+                학생의 질문:
+                {user_input}
+                """
+
+            print("우리가 GPT에게 던질 질문 Sys_q: ", system_prompt)
+            print("우리가 GPT에게 던질 질문 Use_q: ", user_prompt)
+
+            response = client.chat.completions.create(
+                    model='gpt-4o-mini',
+                    # 나는 여기 뭐라고 입력해서 그 사용자의 상황에 맞는 질문을 할것이냐? 프롬프트 엔지니어링
+                    messages=[
+                        {'role': 'system','content': system_prompt},
+                        {'role': 'user','content': user_input}
+                    ]
+            )
+            chat_reply = response.choices[0].message.content
+            return jsonify({"response": chat_reply})
+        
+        # GET 처리하는 곳
         return render_template('curriculum.html', grade=grade, grades=curriculums.keys(), curriculum_title=curriculum_title)
+    
+    # 입력값에 오류가 있는 경우
     return "해당 커리큐럼은 존재하지 않습니다.", 404
+
+# @app.route('/api/chat', methods=['POST'])
+# def chat():
+
+
+# @app.route('/stream', methods=['POST'])
+# def stream():
+
+#     # 프론트에서 보낸 JSON 데이터 받기
+#     data = request.json
+
+#     # 사용자 입력
+#     user_message = data.get('message', '')
+
+#     # 현재 학년
+#     grade = data.get('grade')
+
+#     # 현재 커리큘럼
+#     curriculum_title = data.get('curriculum')
+
+#     # GPT 응답 생성 함수
+#     def generate_response():
+
+#         # GPT 호출
+#         response = client.chat.completions.create(
+
+#             model='gpt-4o-mini',
+
+#             messages=[
+#                 {'role': 'system','content': '당신은 친절한 AI 도우미입니다.'},
+#                 {'role': 'user','content': user_message}
+#             ],
+
+#             # 스트리밍 활성화
+#             stream=True
+#         )
+
+#         # 응답 chunk 단위 반복
+#         for chunk in response:
+
+#             # 현재 텍스트 가져오기
+#             content = chunk.choices[0].delta.content
+
+#             # None 체크
+#             if content:
+
+#                 # 프론트로 실시간 전송
+#                 yield content
+
+#     # 스트리밍 응답 반환
+#     return Response(generate_response(),mimetype='text/plain')
+
 
 if __name__=="__main__":
     app.run(debug=True)
