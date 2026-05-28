@@ -6,7 +6,7 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
 from flask import Flask, request, jsonify, send_from_directory
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 llm = ChatOpenAI(model='gpt-4o-mini')
 
 @app.route("/")
