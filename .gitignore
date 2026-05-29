@@ -15,6 +15,9 @@ uploads/
 *.db
 *.sqlite
 *.sqlite3
+history.json
+
 
 bike_202512.csv
 bike.db 
+
