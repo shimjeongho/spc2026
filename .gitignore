@@ -15,8 +15,11 @@ uploads/
 *.db
 *.sqlite
 *.sqlite3
-history.json
+chroma_db/
 
+# Data
+history.json
+*.pdf
 
 bike_202512.csv
 bike.db 
