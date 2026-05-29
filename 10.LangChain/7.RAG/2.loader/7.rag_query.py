@@ -24,7 +24,10 @@ COLLECTION_NAME = "coding"
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 def build_store():
-    docs = TextLoader("./hbm.txt", encoding="utf-8").load()
+    hbm_docs = TextLoader("./hbm.txt", encoding="utf-8").load()
+    nvme_docs = TextLoader("./nvme.txt",encoding="utf-8").load()
+    docs = hbm_docs + nvme_docs
+
     chunks = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100).split_documents(docs)
     store = Chroma.from_documents(
         chunks, embeddings,
@@ -75,8 +78,7 @@ print('-' * 60)
 print(chain.invoke({"question": "NVMe와 HBM은의 다른건가요?"}))
 
 """
-기존 DB 로딩 성공 - 53 청크 로딩됨
-HBM의 성능은 각 버전마다 다르지만, 기본적으로 HBM은 높은 대역폭과 낮은 전압으로 최적화되어 있습니다. 예를 들어, HBM2는 8 채널 구성을 통해 최대 307 GB/s의 대역폭을 제공하며, HBM3는 16 채널로 819 GB/s에 이릅니다. 또한, HBM4는 32 채널로 최대 2048 GB/s의 대역폭을 지원합니다. 이러한 높은 대역폭은 데이터 전송 속도를 크게 향상시키고, HBM은 그래픽 카드와 같은 고성능 컴퓨팅 환경에서 매우 효과적인 메모리 솔루션으로 자리 잡고 있습니다.
+HBM은 채널당 I/O 데이터 전송률이 1 GT/s에서 9.6 GT/s에 이르는 다양한 규격을 가지고 있으며, 스택당 대역폭은 HBM에서 128 GB/s, HBM2에서 307 GB/s, HBM2E에서 461 GB/s, HBM3에서 819 GB/s, HBM3E에서 1229 GB/s, HBM4에서 2048 GB/s에 달합니다. 이러한 높은 대역폭과 I/O 데이터 전송률 덕분에 HBM은 고성능 그래픽 카드와 같은 응용 분야에서 매우 강력한 성능을 발휘합니다.
 ------------------------------------------------------------
-모른다
+NVMe와 HBM은 서로 다른 기술입니다. NVMe는 비디오 메모리의 데이터 전송을 위한 인터페이스와 프로토콜로, 특히 SSD와 같은 스토리지 장치에서 사용됩니다. 반면, HBM은 고대역폭 메모리로, DRAM의 일종으로 고성능 컴퓨팅에 사용됩니다. HBM은 여러 층으로 쌓아 구성되며, 주로 그래픽 카드와 같은 고성능 요구 사항을 가진 장치에 사용됩니다. 따라서 NVMe는 스토리지 관련 기술이고, HBM은 메모리 반도체 기술입니다.
 """

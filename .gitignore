@@ -20,6 +20,8 @@ chroma_db/
 # Data
 history.json
 *.pdf
+hbm.txt
+nvme.txt
 
 bike_202512.csv
 bike.db 
