@@ -78,9 +78,20 @@ def append_sources(inputs):
     src_lines ="\n".join(f"- {s}" for s in inputs["sources"])
     return f"{inputs['answer']}\n\n 참고문서: \n{src_lines}"
 
+def debug_prompt(prompt):
+    print("\n==== LLM에 들어갈 입력값 (즉 PROMPT) ====")
+    for msg in prompt.messages:
+        print(f"[{msg.type.upper()}]")
+        print(msg.content)
+    print("\n==== 출력 끝 ====\n")
+    return prompt
+
 chain = (
     RunnableLambda(retrieve_and_split)
-    | RunnablePassthrough.assign(answer=(prompt | llm | StrOutputParser()))
+    | RunnablePassthrough.assign(answer=(prompt
+                                         | RunnableLambda(debug_prompt) 
+                                         | llm 
+                                         | StrOutputParser()))
     | RunnableLambda(append_sources) 
 )
 

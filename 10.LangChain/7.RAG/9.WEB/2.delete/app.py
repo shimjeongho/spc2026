@@ -34,7 +34,7 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 
 def format_docs(docs):
-    return "\n\n".join(d.page_content for d in docs)
+    return "\n---\n".join(d.page_content for d in docs)
 
 def debug_prompt(prompt):
     print("\n==== LLM에 들어갈 입력값 (즉 PROMPT) ====")
@@ -44,11 +44,10 @@ def debug_prompt(prompt):
     print("\n==== 출력 끝 ====\n")
     return prompt
 
-
 chain = (
     RunnablePassthrough.assign(context=lambda x: format_docs(retriever.invoke(x["question"])))
     | prompt
-    | RunnableLambda(debug_prompt)   # 중간 결과 확인
+    | RunnableLambda(debug_prompt)    # <-- 중간 결과 확인
     | llm
     | StrOutputParser()
 )
@@ -62,6 +61,41 @@ app = Flask(__name__)
 @app.get('/')
 def index():
     return render_template('index.html')
+
+def delete_document(source):
+    # 1. 몽고DB처럼 NoSQL 구문을 작성해서 우리 DB에서 해당 소스를 갖는 청크들을 삭제함.
+    store._collection.delete(where={"source": source})
+
+    # 2. DATA 안에 pdf파일을 보관중이라면 지운다.
+    path = os.path.join(DATA_DIR, source)
+    if os.path.exists(path):
+        os.remove(path)
+        
+    return True
+
+@app.delete('/files/<path:source>')
+def remote_file(source):
+    existed = delete_document(source)
+    msg = f"'{source}' 삭제 완료" if existed else f"'{source}' 는 목록에 없었습니다."
+    return jsonify({"message": msg, "files": list_documents()})
+
+def list_documents():
+    # 이건 매우 매우 비효율적인 코드임. 우리가 지금은 sqlite가 없어서, 전체 chunks를 다 뒤져서.. 그 안에 metadata를 보고, 겨우 유닉한 파일명을 가져오는 말도 안되는 코드임..
+    return [{"source": s, "chunks": c} for s, c in sorted(_distinct_sources().items())]
+
+def _distinct_sources():
+    data = store._collection.get(include=["metadatas"])
+    
+    counts: dict[str, int] = {}
+    for m in data.get("metadatas", []):
+        src = (m or {}).get("source", "N/A")
+        counts[src] = counts.get(src, 0) + 1
+    return counts
+
+@app.get("/files")
+def files():
+    # VectorDB (ChromaDB) 안에 있는 파일들 목록 가져오기 - 근데? 파일 목록이 따로 저장되어 있지는 않다.. 그래서 모든 청크 데이터를 다 읽어서 그 안에 있는 src/chunks 갯수를 세어서 문서로 간주한다.
+    return jsonify({"files": list_documents()})
 
 def add_my_pdf_file(path):
     docs = PyPDFLoader(path).load()
