@@ -81,3 +81,35 @@ for q in questions:
         for call in getattr(m, "tool_calls", None) or []:
             print(f"  [실행한 쿼리] {call['args'].get('query')}")
     print(f"[답변] {result['messages'][-1].content}")
+
+"""
+[질문]: 서울사 사는 사용자는 몇 명이야?
+  [실행한 쿼리] SELECT COUNT(*) as user_count FROM users WHERE city = '서울'
+[답변] 서울에 사는 사용자는 2명입니다.
+[질문]: 가장 비싼 상품 3개를 가격 높은 순으로 보여줘
+  [실행한 쿼리] SELECT name, price FROM products ORDER BY price DESC LIMIT 3;
+[답변] 가장 비싼 상품 3개는 다음과 같습니다:
+
+1. **노트북** - 가격: 1,500,000 원
+2. **책상** - 가격: 200,000 원
+3. **의자** - 가격: 150,000 원
+[질문]: 홍길동이 주문한 상품 이름과 수량을 보여줘
+  [실행한 쿼리] SELECT products.name, orders.qty 
+FROM orders 
+JOIN users ON orders.user_id = users.id 
+JOIN products ON orders.product_id = products.id 
+WHERE users.name = '홍길동';
+[답변] 홍길동이 주문한 상품은 다음과 같습니다:
+
+- 노트북: 1개
+- 마우스: 2개
+[질문]: 카테고리별 총 주문 수량을 알려줘
+  [실행한 쿼리] SELECT p.category, SUM(o.qty) AS total_quantity
+FROM orders o
+JOIN products p ON o.product_id = p.id
+GROUP BY p.category;
+[답변] 카테고리별 총 주문 수량은 다음과 같습니다:
+
+- 가구: 5
+- 전자: 7
+"""

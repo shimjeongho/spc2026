@@ -74,3 +74,61 @@ for q in questions:
             name2tool = {t.name: t for t in [send_email, search]}
             result = name2tool[call['name']].invoke(call['args'])
             print(f" 결과: {result}")
+
+"""
+=== 도구 명세 살펴보기 ===
+{
+  "description": "이메일 전송 도구의 인자 ",
+  "properties": {
+    "to": {
+      "description": "수신자 이메일 주소 (반드시 유효한 이메일 형식)",
+      "title": "To",
+      "type": "string"
+    },
+    "subject": {
+      "description": "이메일 제목 (50자 이내, 간결하게)",
+      "title": "Subject",
+      "type": "string"
+    },
+    "body": {
+      "description": "이메일 본문 (반드시 한국어로 작성)",
+      "title": "Body",
+      "type": "string"
+    },
+    "priority": {
+      "default": "normal",
+      "description": "우선순위. urgent한 경우에는 high 사용",
+      "enum": [
+        "low",
+        "normal",
+        "high"
+      ],
+      "title": "Priority",
+      "type": "string"
+    }
+  },
+  "required": [
+    "to",
+    "subject",
+    "body"
+  ],
+  "title": "SendEmailInput",
+  "type": "object"
+}
+=== 도구 실제 호출 ===
+
+질문: alice@example.com 에게 회의 일정 변경이라는 제목으로 메일을 보내줘. 본문은 '회의가 내일 3시로 변경되었습니다.'로 보내고, 긴급해.
+ -> send_email ({'to': 'alice@example.com', 'subject': '회의 일정 변경', 'body': '회의가 내일 3시로 변경되었습니다.', 'priority': 'high'})
+[가짜 전송] to=alice@example.com, priority=high
+제목: 회의 일정 변경
+본문: 회의가 내일 3시로 변경되었습니다.
+ 결과: 이메일이 alice@example.com 에게 전송되었습니다. (priority=high)
+
+질문: 파이썬 비동기 프로그래밍 최신 자료 10개만 날짜순으로 검색해줘
+ -> search ({'query': '파이썬 비동기 프로그래밍', 'max_results': 10, 'sort_by': 'date'})
+ 결과: ['결과 1: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 2: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 3: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 4: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 5: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 6: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 7: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 8: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 9: 파이썬 비동기 프로그래밍 (정렬=date)', '결과 10: 파이썬 비동기 프로그래밍 (정렬=date)']
+
+질문: 오늘 점심 메뉴로 샌드위치와 콜라를 주문해줘.
+ (도구 없는 결과): 해당 작업을 수행할 수 있는 도구가 없습니다.
+
+"""
