@@ -31,12 +31,12 @@ voter1 = vote_prompt | llm1 | parser
 voter2 = vote_prompt | llm2 | parser
 voter3 = vote_prompt | llm3 | parser
 
-parallel_vote = RunnableParallel(
+parallel_vote = RunnableParallel({
 # 동시에 3개를 부른다
     "voter1": voter1,
     "voter2": voter2,
-    "voter3" : voter3
-)
+    "voter3": voter3
+})
 
 # 번역 전문 챗봇 솔루션...
 # 1. 여러개의 모델
